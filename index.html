@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Pertanggung jawaban</title>
+    <!-- Link ke file CSS eksternal -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Library XLSX -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <!-- Font Awesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <h2>Tabel Event FHCI</h2>
+
+    <div class="form-container">
+        <input type="text" id="item" name="item" placeholder="Masukkan barang..." required>
+        <button class="button" id="addItem">+ Tambah</button>
+    </div>
+
+    <div class="upload-container">
+        <input type="file" id="uploadExcelFile" accept=".xlsx" />
+        <button class="button-blue" id="uploadExcel">Upload Data Barang</button>
+    </div>
+
+    <!-- Tombol Gembok untuk Kunci Tabel -->
+    <div class="lock-container">
+        <button class="lock-button" id="lockTable" title="Kunci Tabel">
+            <i class="fas fa-lock"></i>
+        </button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Item</th>
+                <th>Kamera</th>
+                <th>Jumlah Realisasi</th>
+                <th>Preview</th>
+                <th>Jumlah Awal</th>
+                <th>Harga Mula-mula</th>
+                <th>Harga Akhirnya</th>
+                <th>Selisih Harga</th>
+                <th>Catatan</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody id="itemTable"></tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6">Total</td>
+                <td id="totalHargaAwal">Rp. 0,00</td>
+                <td id="totalHargaAkhir">Rp. 0,00</td>
+                <td id="totalSelisihHarga">Rp. 0,00</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <br>
+    <button class="button-blue" id="bagikanPeserta">Bagikan Link ke Peserta</button>
+
+    <!-- Popup Kamera -->
+    <div id="cameraPopup" class="popup">
+        <h3>Jepret Gambar</h3>
+        <div id="camera">
+            <video id="video" autoplay style="width: 100%;"></video>
+        </div>
+        <canvas id="canvas" style="display: none;"></canvas>
+        <br>
+        <button class="button" onclick="takePicture()">Jepret</button>
+        <button class="button" onclick="closeCameraPopup()">Tutup</button>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="overlay"></div>
+
+    <!-- Popup Preview Gambar -->
+    <div id="imagePreviewPopup" class="popup-preview">
+        <img id="popupImage" src="" alt="Preview Gambar">
+        <br>
+        <button class="button" onclick="replaceImage()">Ganti Gambar</button>
+        <button class="button" onclick="deleteImage()">Hapus Gambar</button>
+        <button class="button" onclick="closeImagePreview()">Tutup</button>
+    </div>
+
+    <!-- Popup Bagikan Link -->
+    <div class="popup-link" id="popupBagikanLink">
+        <h3>Bagikan Link ke Peserta</h3>
+        <p>Berikut link untuk diakses peserta: <strong>http://yourwebsite.com</strong></p>
+        <button class="button" onclick="closePopupLink()">Tutup</button>
+    </div>
+
+    <!-- Popup Catatan -->
+    <div id="notePopup" class="popup">
+        <h3>Tambah Catatan</h3>
+        <input type="hidden" id="currentRowForNote">
+        <label for="noteName">Nama:</label>
+        <input type="text" id="noteName" placeholder="Nama Anda">
+        <label for="noteComment">Komentar:</label>
+        <textarea id="noteComment" placeholder="Tulis komentar Anda di sini..."></textarea>
+        <br>
+        <div class="popup-buttons">
+            <button class="button" id="kirimButton" onclick="saveNote()">Kirim</button>
+            <button class="button" id="simpanButton" style="display: none;" onclick="saveEditedNote()">Simpan</button>
+            <button class="button" id="batalButton" style="display: none;" onclick="cancelEditNote()">Batal</button>
+            <button class="button" onclick="closeNotePopup()">Tutup</button>
+        </div>
+        <div id="noteHistory" class="note-history">
+            <h4>Riwayat Catatan:</h4>
+            <ul id="noteList"></ul>
+        </div>
+    </div>
+
+    <!-- Popup Kunci Tabel -->
+    <div id="lockPopup" class="popup">
+        <h3>Buka Kunci Tabel</h3>
+        <label for="unlockPassword">Masukkan Password:</label>
+        <input type="password" id="unlockPassword" placeholder="Password">
+        <br>
+        <button class="button" onclick="unlockTable()">Buka Kunci</button>
+        <button class="button" onclick="closeLockPopup()">Tutup</button>
+        <p id="lockError" class="error-message"></p>
+    </div>
+
+    <!-- Link ke file JavaScript eksternal -->
+    <script src="script.js"></script>
+
+</body>
+</html>
